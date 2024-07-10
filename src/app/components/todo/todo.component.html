@@ -1,0 +1,59 @@
+<section class="todolist-wraper">
+  <h1 class="title">TODO APP</h1>
+  <div class="new-todo">
+    <input
+      type="text"
+      placeholder="Escribe una nueva tarea"
+      [formControl]="newTodo"
+      (keydown.enter)="addTodo()"
+    />
+    <button (click)="addTodo()" type="">⚡</button>
+  </div>
+  <div class="filters">
+    <button (click)="changeFilter('all')" [class.active]="filter() === 'all'">
+      Todos
+    </button>
+    <button
+      (click)="changeFilter('active')"
+      [class.active]="filter() === 'active'"
+    >
+      Activos
+    </button>
+    <button
+      type=""
+      (click)="changeFilter('completed')"
+      [class.active]="filter() === 'completed'"
+    >
+      Completados
+    </button>
+  </div>
+  <ul class="todolist">
+    @for (todo of todoListFilter(); track todo.id) {
+      @if (todo.editing) {
+        <li class="todo-editing">
+          <input
+            [value]="todo.title"
+            type="text"
+            (keydown.enter)="editingComplete(todo.id, $event)"
+            placeholder="Editar tarea"
+          />
+        </li>
+      } @else {
+        <li class="todo">
+          <input
+            type="checkbox"
+            [checked]="todo.completed"
+            (click)="toggleTodo(todo.id)"
+          />
+          <label for=""> {{ todo.title }}</label>
+          @if (!todo.completed) {
+            <button (click)="editingTodo(todo.id)">editar</button>
+          }
+          <button (click)="removeTodo(todo.id)" class="text-red-500">
+            eliminar
+          </button>
+        </li>
+      }
+    }
+  </ul>
+</section>
